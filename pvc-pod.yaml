@@ -1,0 +1,34 @@
+#... this is /e/pointillis_maize/code/pointillis_maize/single_video_pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: single-video-pod
+spec:
+  containers:
+  - name: single-video
+    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
+#    image: ubuntu:latest
+#    command: ["sh", "-c", "sleep infinity"]
+    resources:
+      limits:
+        memory: 8G
+        cpu: 1
+      requests:
+        memory: 8G
+        cpu: 1
+    volumeMounts:
+    - mountPath: /pvc
+      name: pvc
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.kubernetes.io/zone
+            operator: In
+            values:
+            - fullerton
+  volumes:
+    - name: pvc
+      persistentVolumeClaim:
+        claimName: single-video-vol

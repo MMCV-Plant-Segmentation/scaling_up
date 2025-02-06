@@ -1,0 +1,14 @@
+#...this is /e/pointillist_maize/code/scaling_up/pvc.yaml
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: single-video-vol
+spec:
+  storageClassName: linstor-unl
+#      storageClassName: rook-ceph-block-central 
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 15Gi
