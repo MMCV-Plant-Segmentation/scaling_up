@@ -7,8 +7,7 @@ spec:
   containers:
   - name: single-video
     image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
-#    image: ubuntu:latest
-#    command: ["sh", "-c", "sleep infinity"]
+    command: ["sh", "-c", "curl https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh | bash"]
     resources:
       limits:
         memory: 8G
@@ -19,6 +18,8 @@ spec:
     volumeMounts:
     - mountPath: /pvc
       name: pvc
+    - mountPath: /secrets
+      name: sec
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -32,3 +33,6 @@ spec:
     - name: pvc
       persistentVolumeClaim:
         claimName: single-video-vol
+    - name: sec
+      secret:
+        secretName: rcloneconfig
