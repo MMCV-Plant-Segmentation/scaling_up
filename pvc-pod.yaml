@@ -1,4 +1,7 @@
-#... this is /e/pointillis_maize/code/pointillis_maize/single_video_pod.yaml
+# this is ../e/pointillist_maize/code/scaling_up/pvc-pod.yaml
+#
+# Wilbur and Fluharty, 11.2.2025
+#
 apiVersion: v1
 kind: Pod
 metadata:
@@ -10,16 +13,27 @@ spec:
     command: ["sh", "-c", "curl https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh | bash"]
     resources:
       limits:
-        memory: 8G
+        memory: 10G
         cpu: 1
       requests:
-        memory: 8G
+        memory: 10G
         cpu: 1
     volumeMounts:
     - mountPath: /pvc
       name: pvc
     - mountPath: /secrets
       name: sec
+#
+# set owner to ubuntu and change permissions on /pvc
+#
+  initContainers:
+  - name: chmod-permissions
+    image: ubuntu:latest
+    command: ["chmod", "-R", "777", "/pvc"]
+    volumeMounts:
+    - mountPath: /pvc
+      name: pvc
+#
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:

@@ -1,4 +1,4 @@
-#...this is /e/pointillist_maize/code/scaling_up/pvc.yaml
+#...this is ../e/pointillist_maize/code/scaling_up/pvc.yaml
 
 apiVersion: v1
 kind: PersistentVolumeClaim
