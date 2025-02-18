@@ -13,11 +13,13 @@ spec:
     command: ["sh", "-c", "curl https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh | bash"]
     resources:
       limits:
-        memory: 10G
+        memory: 8G
         cpu: 1
+        nvidia.com/gpu: 1
       requests:
-        memory: 10G
+        memory: 8G
         cpu: 1
+        nvidia.com/gpu: 1
     volumeMounts:
     - mountPath: /pvc
       name: pvc
@@ -42,7 +44,7 @@ spec:
           - key: topology.kubernetes.io/zone
             operator: In
             values:
-            - fullerton
+            - mizzou
   volumes:
     - name: pvc
       persistentVolumeClaim:
