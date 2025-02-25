@@ -15,7 +15,7 @@ rclone copy nautilus:my-bucket/my-directory /pvc
 #
 # run ffmpeg on whatever is in the directory and output the frames
 #
-ffmpeg -hwaccel cuda -i /pvc/*.MOV -vf fps=2 /pvc/frames/24r_test_frame%06d.png
+ffmpeg -threads 0 -i /pvc/*.MOV -vf fps=2 /pvc/frames/24r_test_frame%06d.png
 #
 # move the output to safety and sleep
 #
