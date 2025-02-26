@@ -14,11 +14,11 @@ spec:
     resources:
       limits:
         memory: 8G
-        cpu: 1
+        cpu: 3
         nvidia.com/gpu: 1
       requests:
         memory: 8G
-        cpu: 1
+        cpu: 3
         nvidia.com/gpu: 1
     volumeMounts:
     - mountPath: /pvc
@@ -44,7 +44,7 @@ spec:
           - key: topology.kubernetes.io/zone
             operator: In
             values:
-            - mizzou
+            - fullerton
   volumes:
     - name: pvc
       persistentVolumeClaim:
