@@ -6,7 +6,7 @@ cp /secrets/rclone.conf ~/.config/rclone
 # make the persistent volume claim
 #
 mkdir /pvc/frames
-rclone copy nautilus:my-bucket/my-directory /pvc
+rclone copy --progress nautilus:my-bucket/my-directory /pvc
 #
 # get the cuda ffmpeg needs
 #
@@ -19,6 +19,6 @@ ffmpeg -threads 0 -i /pvc/*.MOV -vf fps=2 /pvc/frames/24r_test_frame%06d.png
 #
 # move the output to safety and sleep
 #
-zip /pvc/frames.zip /pvc/frames
-rclone copy /pvc/frames.zip nautilus:my-bucket
+zip /pvc/frames.zip /pvc/frames/*
+rclone copy --progress /pvc/frames.zip nautilus:my-bucket
 sleep infinity
