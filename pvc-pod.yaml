@@ -10,7 +10,7 @@ spec:
   containers:
   - name: single-video
     image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
-    command: ["sh", "-c", "curl https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh | bash"]
+    command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh && bash pointify.sh"]
     resources:
       limits:
         memory: 8G
