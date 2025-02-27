@@ -16,9 +16,12 @@ rclone copy --progress nautilus:my-bucket/my-directory /pvc
 # run ffmpeg on whatever is in the directory and output the frames
 #
 ffmpeg -threads 0 -i /pvc/*.MOV -vf fps=2 /pvc/frames/24r_test_frame%06d.png
+echo extracted frames
 #
 # move the output to safety and sleep
 #
 7z a -mmt /pvc/frames.7z /pvc/frames/*
+echo created archive
 rclone copy --progress /pvc/frames.7z nautilus:my-bucket
+echo uploaded archive
 sleep infinity
