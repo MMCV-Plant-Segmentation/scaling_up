@@ -9,8 +9,10 @@ metadata:
 spec:
   containers:
   - name: single-video
-    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
-    command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh && bash pointify.sh"]
+  # image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
+    image: ubuntu:latest
+  # command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh && bash pointify.sh"]
+    command: ["sleep", "infinity"]
     resources:
       limits:
         memory: 10G
