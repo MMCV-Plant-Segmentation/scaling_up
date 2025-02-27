@@ -19,6 +19,6 @@ ffmpeg -threads 0 -i /pvc/*.MOV -vf fps=2 /pvc/frames/24r_test_frame%06d.png
 #
 # move the output to safety and sleep
 #
-7z a -mmt /pvc/frames.zip /pvc/frames/*
+7z a -mmt /pvc/frames.7z /pvc/frames/*
 rclone copy --progress /pvc/frames.7z nautilus:my-bucket
 sleep infinity
