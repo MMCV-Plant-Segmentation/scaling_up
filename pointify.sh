@@ -20,8 +20,8 @@ echo extracted frames
 #
 # move the output to safety and sleep
 #
-7z a -mmt /pvc/frames.7z /pvc/frames/*
+tar -cvf /pvc/frames.tar /pvc/frames/*
 echo created archive
-rclone copy --progress /pvc/frames.7z nautilus:my-bucket
+rclone copy --progress /pvc/frames.tar nautilus:my-bucket
 echo uploaded archive
 sleep infinity

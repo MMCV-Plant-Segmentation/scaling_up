@@ -10,16 +10,17 @@ spec:
   containers:
   - name: single-video
     image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
-    command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh && bash pointify.sh"]
+    command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/pointify.sh && bash -x pointify.sh"]
+    imagePullPolicy: Always
     resources:
       limits:
-        memory: 8G
+        memory: 10G
         cpu: 3
-        nvidia.com/gpu: 1
+        nvidia.com/gpu: 0
       requests:
-        memory: 8G
+        memory: 10G
         cpu: 3
-        nvidia.com/gpu: 1
+        nvidia.com/gpu: 0
     volumeMounts:
     - mountPath: /pvc
       name: pvc
