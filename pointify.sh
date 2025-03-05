@@ -5,7 +5,7 @@ cp /secrets/rclone.conf ~/.config/rclone
 #
 # make the persistent volume claim
 #
-mkdir /pvc/frames
+mkdir /pvc/frames /pvc/colmapresult
 rclone copy --progress nautilus:my-bucket/my-directory /pvc
 #
 # get the cuda ffmpeg needs
@@ -24,4 +24,6 @@ tar -cvf /pvc/frames.tar /pvc/frames/*
 echo created archive
 rclone copy --progress /pvc/frames.tar nautilus:my-bucket
 echo uploaded archive
+colmap automatic_reconstructor --image_path /pvc/frames --workspace_path /pvc/colmapresult --data_type video --quality extreme
+echo colmap did its thing maybe
 sleep infinity
