@@ -1,0 +1,53 @@
+# this is ../e/pointillist_maize/code/scaling_up/frames.yaml
+#
+# Wilbur and Fluharty, 11.2.2025
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frames-pod
+spec:
+  containers:
+  - name: framescontainer
+    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
+    command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/extract.sh && bash -x extract.sh"]
+    imagePullPolicy: Always
+    resources:
+      limits:
+        memory: 8G
+        cpu: 3
+      requests:
+        memory: 8G
+        cpu: 3
+    volumeMounts:
+    - mountPath: /pvc
+      name: pvc
+    - mountPath: /secrets
+      name: sec
+#
+# set owner to ubuntu and change permissions on /pvc
+#
+  initContainers:
+  - name: chmod-permissions
+    image: ubuntu:latest
+    command: ["chmod", "-R", "777", "/pvc"]
+    volumeMounts:
+    - mountPath: /pvc
+      name: pvc
+#
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.kubernetes.io/zone
+            operator: In
+            values:
+            - fullerton
+  volumes:
+    - name: pvc
+      persistentVolumeClaim:
+        claimName: single-video-vol
+    - name: sec
+      secret:
+        secretName: rcloneconfig
