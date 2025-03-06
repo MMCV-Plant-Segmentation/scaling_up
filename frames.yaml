@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
   - name: framescontainer
-    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
+    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:frames
     command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/extract.sh && bash -x extract.sh"]
     imagePullPolicy: Always
     resources:
