@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
   - name: rcnstrctncontainer
-    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:notlatest
+    image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:reconstruction
     command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/reconstruct.sh && bash -x reconstruct.sh"]
     imagePullPolicy: Always
     resources:
@@ -44,7 +44,7 @@ spec:
           - key: topology.kubernetes.io/zone
             operator: In
             values:
-            - fullerton
+            - mizzou
   volumes:
     - name: pvc
       persistentVolumeClaim:
