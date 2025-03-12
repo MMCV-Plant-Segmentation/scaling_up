@@ -7,7 +7,7 @@ mkdir colmapresult
 #Get frames from S3 storage
 rclone copy nautilus:my-bucket/frames.tar /home/ubuntu
 #extract tar
-tar xf /home/ubuntu/frames.tar --directory /home/ubuntu
+tar xf /home/ubuntu/frames.tar 
 #run colmap
 colmap automatic_reconstructor --image_path /home/ubuntu/frames --workspace_path /home/ubuntu/colmapresult --data_type video --quality extreme --num_threads=18
 echo colmap did its thing maybe
