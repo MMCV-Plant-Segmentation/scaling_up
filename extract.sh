@@ -14,6 +14,6 @@ ffmpeg -threads 0 -progress - -i /home/ubuntu/*.MOV -vf fps=2 /home/ubuntu/frame
 #
 # move the output to safety and sleep
 #
-tar -cvf /home/ubuntu/frames.tar /home/ubuntu/frames/*
+tar -cvf frames.tar frames/*
 rclone copy --progress /home/ubuntu/frames.tar nautilus:my-bucket
 sleep infinity
