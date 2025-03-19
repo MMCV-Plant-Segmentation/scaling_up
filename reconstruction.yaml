@@ -1,7 +1,7 @@
 # this is ../e/pointillist_maize/code/scaling_up/reconstruction.yaml
 #
 # Wilbur and Fluharty, 11.2.2025
-#
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -27,7 +27,6 @@ spec:
     - mountPath: /secrets
       name: sec
 
-
   initContainers:
   - name: chmod-permissions
     image: ubuntu:latest
@@ -45,6 +44,7 @@ spec:
             operator: In
             values:
             - mizzou
+
   volumes:
     - name: pvc
       persistentVolumeClaim:
