@@ -5,8 +5,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: single-video-vol
 spec:
-  storageClassName: linstor-unl
-#      storageClassName: rook-ceph-block-central 
+  # storageClassName: linstor-unl
+  # storageClassName: rook-ceph-block-central
   accessModes:
   - ReadWriteOnce
   resources:
