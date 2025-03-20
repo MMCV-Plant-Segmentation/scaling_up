@@ -21,12 +21,12 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            memory: 32G
-            cpu: 3
+            memory: 128G
+            cpu: 24
             nvidia.com/gpu: 1
           requests:
-            memory: 32G
-            cpu: 3
+            memory: 128G
+            cpu: 24
             nvidia.com/gpu: 1
         volumeMounts:
         - mountPath: /pvc
