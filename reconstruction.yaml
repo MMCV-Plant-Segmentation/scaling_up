@@ -21,11 +21,11 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            memory: 128G
+            memory: 64G
             cpu: 24
             nvidia.com/gpu: 1
           requests:
-            memory: 128G
+            memory: 64G
             cpu: 24
             nvidia.com/gpu: 1
         volumeMounts:
