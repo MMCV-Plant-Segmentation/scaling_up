@@ -29,25 +29,25 @@ spec:
             cpu: 24
             nvidia.com/gpu: 1
         volumeMounts:
-        - mountPath: /pvc
-          name: pvc
+        # - mountPath: /pvc
+        #   name: pvc
         - mountPath: /secrets
           name: sec
 
-      initContainers:
-      - name: chmod-permissions
-        image: ubuntu:latest
-        command: ["chmod", "-R", "777", "/pvc"]
-        resources:
-          limits:
-            memory: 100Mi
-            cpu: 1
-          requests:
-            memory: 100Mi
-            cpu: 1
-        volumeMounts:
-        - mountPath: /pvc
-          name: pvc
+      # initContainers:
+      # - name: chmod-permissions
+      #   image: ubuntu:latest
+      #   command: ["chmod", "-R", "777", "/pvc"]
+      #   resources:
+      #     limits:
+      #       memory: 100Mi
+      #       cpu: 1
+      #     requests:
+      #       memory: 100Mi
+      #       cpu: 1
+      #   volumeMounts:
+      #   - mountPath: /pvc
+      #     name: pvc
 
       nodeSelector:
         nvidia.com/cuda.runtime-version.full: "12.8"
@@ -63,9 +63,9 @@ spec:
       #           - mizzou
 
       volumes:
-        - name: pvc
-          persistentVolumeClaim:
-            claimName: single-video-vol
+        # - name: pvc
+        #   persistentVolumeClaim:
+        #     claimName: single-video-vol
         - name: sec
           secret:
             secretName: rcloneconfig

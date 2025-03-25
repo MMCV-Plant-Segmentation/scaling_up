@@ -10,3 +10,6 @@ rclone copy --progress nautilus:my-bucket/frames.tar /home/ubuntu
 tar xvf /home/ubuntu/frames.tar
 #run colmap
 colmap automatic_reconstructor --image_path /home/ubuntu/frames --workspace_path /home/ubuntu/colmapresult --data_type video --quality extreme --num_threads=24
+
+tar -cvf reconstruction.tar colmapresult
+rclone copy --progress reconstruction.tar nautilus:my-bucket
