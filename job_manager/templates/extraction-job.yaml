@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ job_name }}
+  labels:
+    jobgroup: reconstruction
+
+spec:
+  backoffLimit: 0
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+      - name: colmap
+        image: ubuntu:latest
+        command: ["sh", "-c", "echo $VIDEO_FILE_NAME"]
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 1G
+            cpu: 1
+          requests:
+            memory: 1G
+            cpu: 1
+        env:
+        - name: VIDEO_FILE_NAME
+          value: {{ video_file_name }}
