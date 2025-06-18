@@ -1,4 +1,4 @@
-VIDEO_FILE_NAME = $1
+VIDEO_FILE_NAME=$1
 
 mkdir -p ~/.config/rclone
 cp /secrets/rclone.conf ~/.config/rclone
