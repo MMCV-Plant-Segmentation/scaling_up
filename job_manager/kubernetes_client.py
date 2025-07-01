@@ -50,6 +50,7 @@ class KubernetesClient:
         args = ["-o", "json", *args]
         lines = self.run_subcommand(args)
         object_lines = []
+
         for line in lines:
             object_lines.append(line)
 
@@ -70,19 +71,35 @@ class KubernetesClient:
         pods = response['items']
         return pods
 
-    def get_pod(self, name: str) -> Dict:
-        pod = self.run_subcommand_json(["get", "pods", name])
-        return pod
+    # TODO: watch=T/F should probably be two separate functions
+    def get_pod(self, name: str, watch: bool) -> Iterator[Dict]:
+        if not watch:
+            pod = self.run_subcommand_json(["get", "pods", name])
+            yield pod
+            return
+
+        state_stream = self.run_subcommand_json_stream(["get", "pods", name, "--watch"])
+
+        for state in state_stream:
+            yield state
 
     def get_logs(self, resource: str, follow: bool) -> Iterator[str]:
         follow_flag = ["--follow"] * follow
         lines = self.run_subcommand(["logs", *follow_flag, resource])
+
         for line in lines: # this could just be `yield from` but this is nice for debugging
             yield line
 
-    def get_events(self, watch: bool, resource: Optional[str] = None) -> Iterator[Dict]:
+    def get_events(
+            self,
+            watch: bool,
+            watch_only: bool = False,
+            resource: Optional[str] = None
+        ) -> Iterator[Dict]:
         watch_flag = ["--watch"] * watch
+        watch_only_flag = ["--watch-only"] * watch_only
         for_flag = ["--for", resource] * (resource is not None)
-        events = self.run_subcommand_json_stream(["events", *watch_flag, *for_flag])
+        events = self.run_subcommand_json_stream(["events", *watch_flag, *watch_only_flag, *for_flag])
+
         for event in events:
             yield event

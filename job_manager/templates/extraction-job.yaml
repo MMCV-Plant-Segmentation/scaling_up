@@ -13,17 +13,27 @@ spec:
       restartPolicy: Never
 
       containers:
-      - name: colmap
-        image: ubuntu:latest
-        command: ["sh", "-c", "echo $VIDEO_FILE_NAME"]
+      - name: framescontainer
+        image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:frames
+        command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/job_manager/runtime_scripts/extract.sh && bash -x extract.sh $VIDEO_BUCKET $VIDEO_FILE_PATH"]
         imagePullPolicy: Always
         resources:
           limits:
-            memory: 1G
-            cpu: 1
+            memory: 8G
+            cpu: 3
           requests:
-            memory: 1G
-            cpu: 1
+            memory: 8G
+            cpu: 3
+        volumeMounts:
+        - mountPath: /secrets
+          name: sec
         env:
-        - name: VIDEO_FILE_NAME
-          value: {{ video_file_name }}
+        - name: VIDEO_BUCKET
+          value: {{ video_bucket }}
+        - name: VIDEO_FILE_PATH
+          value: {{ video_file_path }}
+
+      volumes:
+      - name: sec
+        secret:
+          secretName: rcloneconfig
