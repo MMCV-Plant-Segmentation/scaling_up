@@ -1,6 +1,4 @@
 import pathlib
-import time
-import random
 
 from jinja2 import (
     Environment,
@@ -8,19 +6,11 @@ from jinja2 import (
 )
 
 
-# since apparently this isn't the default
-def deterministic_hash(string):
-    # https://stackoverflow.com/a/72059189/11411686
-    r = random.Random(string) # oh the irony
-    return r.randint(0, 9999999999) # that should be a low enough chance of collisions for our purposes
-
-
 class VideoExtractorJobBuilder:
-    def __init__(self, video_bucket, video_path, kubernetes_client):
+    def __init__(self, job_name, video_bucket, video_path, kubernetes_client):
         self.video_bucket = video_bucket
         self.video_path = video_path
-        self.id = deterministic_hash(self.video_path)
-        self.name = f"reconstruction-{self.id}-{int(time.time())}"
+        self.name = job_name
         self.kubernetes_client = kubernetes_client
 
     # TODO: extract this into a class to avoid recreating the environment

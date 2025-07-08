@@ -1,10 +1,20 @@
+import hashlib
 import re
+import time
 import traceback
 import pathlib
 
 from extractor_manifest_builder import VideoExtractorJobBuilder
 from kubernetes_client import KubernetesApiError, KubernetesClient
 from rclone_client import RCloneClient
+
+def hash_file(f):
+    # https://stackoverflow.com/a/59056837/11411686
+    hash = hashlib.md5()
+    while chunk := f.read(8192):
+        hash.update(chunk)
+
+    return hash
 
 
 def run_job(client, manifest_path):
@@ -48,20 +58,25 @@ def run_job(client, manifest_path):
     return "path/to/logs" # TODO
 
 
-def upload_video(video_path):
-    # TODO: video file names are not unique across years - need to do something about that!
+def upload_video(video_path, bucket, destination_folder):
     video_path = pathlib.Path(video_path)
-    bucket = "plant-segmentation"
-    destination = video_path.stem
 
     rclone = RCloneClient()
-    rclone.upload(str(video_path), bucket, destination)
-    return bucket, f"{destination}/{video_path.name}"
+    rclone.upload(str(video_path), bucket, destination_folder)
+    return f"{destination_folder}/{video_path.name}"
 
 def main():
-    bucket, destination = upload_video("/home/creallf/Videos/not_DJI_0309.MOV")
+    video_path = "/home/creallf/Videos/not_DJI_0309.MOV"
+    with open(video_path, 'rb') as f:
+        hash = hash_file(f)
+    video_id = hash.hexdigest()[:8]
+
+    bucket = "plant-segmentation"
+    destination = upload_video(video_path, bucket, video_id)
+
     client = KubernetesClient()
-    job_builder = VideoExtractorJobBuilder(bucket, destination, client)
+    job_name = f"reconstruction-{video_id}-{int(time.time())}"
+    job_builder = VideoExtractorJobBuilder(job_name, bucket, destination, client)
     manifest_path = job_builder.build()
 
     run_job(client, manifest_path)
