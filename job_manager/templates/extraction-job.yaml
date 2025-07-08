@@ -13,9 +13,9 @@ spec:
       restartPolicy: Never
 
       containers:
-      - name: framescontainer
+      - name: frames-container
         image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:frames
-        command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/job_manager/runtime_scripts/extract.sh && bash -x extract.sh $VIDEO_BUCKET $VIDEO_FILE_PATH"]
+        command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/job_manager/runtime_scripts/extract.sh && bash -x extract.sh $BUCKET_NAME $JOB_FOLDER_PATH $VIDEO_FILE_NAME $FRAMES_ARCHIVE_FILE_NAME"]
         imagePullPolicy: Always
         resources:
           limits:
@@ -24,14 +24,20 @@ spec:
           requests:
             memory: 8G
             cpu: 3
+
         volumeMounts:
         - mountPath: /secrets
           name: sec
+
         env:
-        - name: VIDEO_BUCKET
-          value: {{ video_bucket }}
-        - name: VIDEO_FILE_PATH
-          value: {{ video_file_path }}
+        - name: BUCKET_NAME
+          value: {{ bucket_name }}
+        - name: JOB_FOLDER_PATH
+          value: {{ job_folder_path }}
+        - name: VIDEO_FILE_NAME
+          value: {{ video_file_name }}
+        - name: FRAMES_ARCHIVE_FILE_NAME
+          value: {{ frames_archive_file_name }}
 
       volumes:
       - name: sec

@@ -2,9 +2,10 @@ import hashlib
 import re
 import time
 import traceback
-import pathlib
 
-from extractor_manifest_builder import VideoExtractorJobBuilder
+from pathlib import Path
+
+from manifest_builder import ManifestBuilder
 from kubernetes_client import KubernetesApiError, KubernetesClient
 from rclone_client import RCloneClient
 
@@ -58,26 +59,32 @@ def run_job(client, manifest_path):
     return "path/to/logs" # TODO
 
 
-def upload_video(video_path, bucket, destination_folder):
-    video_path = pathlib.Path(video_path)
-
+def upload_video(video_path: Path, bucket, destination_folder):
     rclone = RCloneClient()
     rclone.upload(str(video_path), bucket, destination_folder)
     return f"{destination_folder}/{video_path.name}"
 
 def main():
-    video_path = "/home/creallf/Videos/not_DJI_0309.MOV"
+    video_path = Path("/home/creallf/Videos/not_DJI_0309.MOV")
     with open(video_path, 'rb') as f:
         hash = hash_file(f)
     video_id = hash.hexdigest()[:8]
+    job_s3_folder = video_id
 
     bucket = "plant-segmentation"
-    destination = upload_video(video_path, bucket, video_id)
+    destination = upload_video(video_path, bucket, job_s3_folder)
 
     client = KubernetesClient()
     job_name = f"reconstruction-{video_id}-{int(time.time())}"
-    job_builder = VideoExtractorJobBuilder(job_name, bucket, destination, client)
-    manifest_path = job_builder.build()
+    job_builder = ManifestBuilder(
+        bucket_name=bucket,
+        s3_folder_path=job_s3_folder,
+        job_name=job_name,
+        video_file_name=video_path.name,
+        frames_archive_file_name="frames.tar",
+        reconstruction_archive_file_name="reconstruction.tar",
+    )
+    manifest_path = job_builder.get_extraction_manifest()
 
     run_job(client, manifest_path)
 
