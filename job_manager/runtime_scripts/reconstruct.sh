@@ -9,7 +9,7 @@ mkdir -p ~/.config/rclone
 cp /secrets/rclone.conf ~/.config/rclone
 mkdir colmapresult
 
-rclone copy --progress "${BUCKET_NAME}:${FRAMES_FILE_PATH}" .
+rclone copy --progress "nautilus:${BUCKET_NAME}/${FRAMES_FILE_PATH}" .
 tar xvf "${FRAMES_ARCHIVE_FILE_NAME}"
 echo colmap automatic_reconstructor --image_path frames --workspace_path colmapresult --data_type video --quality extreme --num_threads=24
 

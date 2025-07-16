@@ -94,12 +94,16 @@ class KubernetesClient:
             self,
             watch: bool,
             watch_only: bool = False,
-            resource: Optional[str] = None
         ) -> Iterator[Dict]:
         watch_flag = ["--watch"] * watch
         watch_only_flag = ["--watch-only"] * watch_only
-        for_flag = ["--for", resource] * (resource is not None)
-        events = self.run_subcommand_json_stream(["events", *watch_flag, *watch_only_flag, *for_flag])
+        command = [
+            "get",
+            "events",
+            *watch_flag,
+            *watch_only_flag,
+        ]
+        events = self.run_subcommand_json_stream(command)
 
         for event in events:
             yield event

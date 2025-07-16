@@ -22,19 +22,24 @@ def run_job(client, manifest_path):
     try:
         job_response = client.create_job(manifest_path)
         job_name = job_response['metadata']['name']
-        event_stream = client.get_events(watch=True, resource=f"job/{job_name}") # watch_only=True
+        event_stream = client.get_events(watch=True, watch_only=True)
         pod_name = None
 
         for event in event_stream:
-            if event['involvedObject']['name'] != job_name:
+            # if event['involvedObject']['name'] != job_name:
+            if not event['involvedObject']['name'].startswith(job_name):
                 continue
 
-            reason = event['reason']
-            print(reason, event['message'])
-            if reason == 'SuccessfulCreate':
-                match = re.match('Created pod: (.*)', event['message'])
-                pod_name = match.groups()[0]
-                break
+            # TODO: not working for reconstruction for some reason? nautilus update?
+            # reason = event['reason']
+            # print(reason, event['message'])
+            # if reason == 'SuccessfulCreate':
+            #     match = re.match('Created pod: (.*)', event['message'])
+            #     pod_name = match.groups()[0]
+            #     break
+
+            pod_name = event['involvedObject']['name']
+            break
 
         state_stream = client.get_pod(pod_name, watch=True)
         for state in state_stream:
