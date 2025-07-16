@@ -84,9 +84,10 @@ def main():
         frames_archive_file_name="frames.tar",
         reconstruction_archive_file_name="reconstruction.tar",
     )
-    manifest_path = job_builder.get_extraction_manifest()
+    extraction_manifest_path = job_builder.get_extraction_manifest()
+    reconstruction_manifest_path = job_builder.get_reconstruction_manifest()
 
-    run_job(client, manifest_path)
+    run_job(client, reconstruction_manifest_path)
 
 if __name__ == '__main__':
     main()

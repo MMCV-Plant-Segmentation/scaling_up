@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ job_name }}-reconstruction"
+  labels:
+    jobgroup: reconstruction
+
+spec:
+  backoffLimit: 0
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+      - name: reconstruction-container
+        image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:reconstruction
+        command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/job_manager/runtime_scripts/reconstruct.sh && bash -x reconstruct.sh $BUCKET_NAME $JOB_FOLDER_PATH $FRAMES_ARCHIVE_FILE_NAME $RECONSTRUCTION_ARCHIVE_FILE_NAME"]
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 64G
+            cpu: 24
+            nvidia.com/gpu: 1
+
+          requests:
+            memory: 64G
+            cpu: 24
+            nvidia.com/gpu: 1
+
+        volumeMounts:
+        - mountPath: /secrets
+          name: sec
+
+        env:
+        - name: BUCKET_NAME
+          value: "{{ bucket_name }}"
+        - name: JOB_FOLDER_PATH
+          value: "{{ job_folder_path }}"
+        - name: FRAMES_ARCHIVE_FILE_NAME
+          value: "{{ frames_archive_file_name }}"
+        - name: RECONSTRUCTION_ARCHIVE_FILE_NAME
+          value: "{{ reconstruction_archive_file_name }}"
+
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                # - key: nvidia.com/cuda.runtime-version.major
+                #   operator: Gt
+                #   values:
+                #     - "11" # >= 12
+
+                # - key: nvidia.com/cuda.runtime-version.minor
+                #   operator: Gt
+                #   values:
+                #     - "7" # >= 8
+
+                - key: nvidia.com/cuda.runtime-version.full
+                  operator: In
+                  values:
+                    - "12.8"
+
+      volumes:
+        - name: sec
+          secret:
+            secretName: rcloneconfig

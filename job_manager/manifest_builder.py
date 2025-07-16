@@ -63,5 +63,5 @@ class ManifestBuilder:
 
     def get_reconstruction_manifest(self):
         manifest_path = str(self.folder / 'reconstruction-manifest.yaml')
-        self.create_extraction_manifest(manifest_path)
+        self.create_reconstruction_manifest(manifest_path)
         return manifest_path

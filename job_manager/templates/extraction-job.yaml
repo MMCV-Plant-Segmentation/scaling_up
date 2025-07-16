@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ job_name }}
+  name: "{{ job_name }}-extraction"
   labels:
     jobgroup: reconstruction
 
@@ -31,13 +31,13 @@ spec:
 
         env:
         - name: BUCKET_NAME
-          value: {{ bucket_name }}
+          value: "{{ bucket_name }}"
         - name: JOB_FOLDER_PATH
-          value: {{ job_folder_path }}
+          value: "{{ job_folder_path }}"
         - name: VIDEO_FILE_NAME
-          value: {{ video_file_name }}
+          value: "{{ video_file_name }}"
         - name: FRAMES_ARCHIVE_FILE_NAME
-          value: {{ frames_archive_file_name }}
+          value: "{{ frames_archive_file_name }}"
 
       volumes:
       - name: sec
