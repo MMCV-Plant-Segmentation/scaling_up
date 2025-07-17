@@ -11,7 +11,7 @@ mkdir colmapresult
 
 rclone copy --progress "nautilus:${BUCKET_NAME}/${FRAMES_FILE_PATH}" .
 tar xvf "${FRAMES_ARCHIVE_FILE_NAME}"
-echo colmap automatic_reconstructor --image_path frames --workspace_path colmapresult --data_type video --quality extreme --num_threads=24
+colmap automatic_reconstructor --image_path frames --workspace_path colmapresult --data_type video --quality extreme --num_threads=24
 
 tar -cvf "${RECONSTRUCTION_ARCHIVE_FILE_NAME}" colmapresult
 rclone copy --progress "${RECONSTRUCTION_ARCHIVE_FILE_NAME}" "nautilus:${BUCKET_NAME}/${JOB_FOLDER_PATH}"
