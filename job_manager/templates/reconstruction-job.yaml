@@ -47,6 +47,9 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
+                # TODO: comparison operators don't seem to work! hardcoding the version for now
+                # $ kubectl get node -A --selector=nvidia.com/cuda.runtime-version.major>11
+
                 # - key: nvidia.com/cuda.runtime-version.major
                 #   operator: Gt
                 #   values:
