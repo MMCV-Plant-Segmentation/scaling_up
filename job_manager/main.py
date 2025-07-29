@@ -1,6 +1,7 @@
 import hashlib
 import json
 import re
+import sys
 import time
 import traceback
 
@@ -105,13 +106,19 @@ def get_reconstruction_from_video(source_video_path: Path, output_reconstruction
         print(f"$ {' '.join(e.command)}")
         print(e.message)
 
-    download_reconstruction(rclone_client, bucket, f"{job_s3_folder}/")
+    download_reconstruction(
+        rclone_client,
+        bucket,
+        f"{job_s3_folder}/{reconstruction_archive_file_name}",
+        output_reconstruction_folder
+    )
 
 
-def main():
-    video_path = Path("/home/creallf/Videos/not_DJI_0309.MOV")
-    get_reconstruction_from_video(video_path)
+def main(source_video: str, destination_folder: str):
+    video_path = Path(source_video)
+    destination_path = Path(destination_folder)
+    get_reconstruction_from_video(video_path, destination_path)
 
 
 if __name__ == '__main__':
-    main()
+    main(*sys.argv[1:])
