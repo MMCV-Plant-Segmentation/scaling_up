@@ -57,7 +57,7 @@ def run_job(client, manifest_path):
         print('>', line, end='')
     print("End of logs")
 
-    final_status = client.get_pod(pod_name, watch_pod=False)
+    final_status = client.get_pod(pod_name, watch=False)
     return final_status
 
 
@@ -121,4 +121,7 @@ def main(source_video: str, destination_folder: str):
 
 
 if __name__ == '__main__':
-    main(*sys.argv[1:])
+    main(
+        source_video=sys.argv[1],
+        destination_folder=sys.argv[2],
+    )
