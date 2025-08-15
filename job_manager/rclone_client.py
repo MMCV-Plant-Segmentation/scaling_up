@@ -15,7 +15,7 @@ class RCloneClient:
 
     def download(self, source_bucket, source_path, dest_path):
         result = subprocess.run(
-            ["echo", "rclone", "copy", "--progress", f"nautilus:{source_bucket}/{source_path}", dest_path],
+            ["rclone", "copy", "--progress", f"nautilus:{source_bucket}/{source_path}", dest_path],
             check=True,
         )
         return result
