@@ -7,7 +7,7 @@ spec:
   containers:
     - name: vggt-test-container
       image: gitlab-registry.nrp-nautilus.io/creallf/plant-segmentation-container-registry:vggt
-      command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/evieteru/scaling_up/refs/heads/main/vggt/vggt_reconstruct.sh && bash -x vggt_reconstruct.sh"]
+      command: ["sh", "-c", "curl -O https://raw.githubusercontent.com/MMCV-Plant-Segmentation/scaling_up/refs/heads/main/vggt/vggt_reconstruct.sh && bash -x vggt_reconstruct.sh"]
       imagePullPolicy: Always
 
       resources:
